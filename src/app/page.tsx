@@ -1,12 +1,13 @@
-import Signin from '@/components/auth/SignIn';
-import { SessionProvider } from 'next-auth/react';
-import { authOptions } from './api/auth/AuthConfig';
+import SignIn from '@/components/auth/SignIn';
+import authprovider from './providers/AuthProvider';
+import SignOut from '@/components/auth/SignOut';
 
 export default async function Home() {
+	const isLoggedIn = await authprovider.isLoggedIn();
 	return (
-		<>
-			<h1>Home</h1>
-			<Signin />
-		</>
+		<div>
+			<h2>Home</h2>
+			{isLoggedIn ? <SignOut /> : <SignIn />}
+		</div>
 	);
 }

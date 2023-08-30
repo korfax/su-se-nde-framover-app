@@ -1,20 +1,15 @@
 'use client';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
-export default function Component() {
-	const { data } = useSession();
-	if (data?.user) {
-		return (
-			<>
-				Signed in as {data.user.name} <br />
-				<button onClick={() => signOut()}>Sign out</button>
-			</>
-		);
-	}
+export default function SignIn() {
+	const router = useRouter();
+	const getLoginUrl = async () => {
+		return await fetch('api/auth/login').then((res) => res.text());
+	};
+
 	return (
-		<>
-			Not signed in <br />
-			<button onClick={() => signIn('azure-ad')}>Sign in</button>
-		</>
+		<button type="button" onClick={async () => router.push(await getLoginUrl())}>
+			Sign in
+		</button>
 	);
 }
