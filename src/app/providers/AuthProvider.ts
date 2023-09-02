@@ -60,19 +60,9 @@ class Authprovider {
 			});
 	}
 
-	/**
-	 * @param token tokenet som ble generert i {@link getTokenByAuthCode}
-	 * @returns en uuid som referer til det lagrede tokenet i redis
-	 */
-	//TODO - uuid
-	async lagreToken(token: msal.AuthenticationResult): Promise<string> {
-		throw new Error('not yet implemented');
-	}
-
-	async isLoggedIn(): Promise<boolean> {
-		//TODO - burde sjekke på homeAccountId som er lagret i tokenet
-		const res = await this.#msalInstanse.getTokenCache().getAllAccounts();
-		return res.length > 0;
+	async isLoggedIn(accId: string): Promise<boolean> {
+		const res = await this.#msalInstanse.getTokenCache().getAccountByHomeId(accId);
+		return res !== null;
 	}
 
 	/**
@@ -82,20 +72,20 @@ class Authprovider {
 	 * Mens andre ganger finnes den :shrug: Wrapper derfor bare i en try/catch og gjør en best effort
 	 */
 	async logOut(accId: string) {
-		//TODO - ta inn home account id for å hente account
-		console.log('accId: ', accId);
-
 		try {
-			await this.#msalInstanse.getTokenCache().removeAccount({
-				homeAccountId: 'd608639f-50f2-47e9-8de3-e60c1329393f.b990393c-028e-47d6-8d3b-e6a106b1d477',
-				environment: 'login.windows.net',
-				tenantId: 'b990393c-028e-47d6-8d3b-e6a106b1d477',
-				username: 'testy.McTesty@raqtechsolutions.onmicrosoft.com',
-				localAccountId: 'd608639f-50f2-47e9-8de3-e60c1329393f',
-			});
+			const res = await this.#msalInstanse.getTokenCache().getAccountByHomeId(accId);
+			if (res === null) {
+				return;
+			}
+
+			await this.#msalInstanse.getTokenCache().removeAccount(res);
 		} catch (error) {
 			console.log('Brukerens account finnes ikke i token cachen');
 		}
+	}
+
+	async getAccountInfo(accId: string) {
+		return await this.#msalInstanse.getTokenCache().getAccountByHomeId(accId);
 	}
 }
 

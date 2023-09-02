@@ -10,8 +10,6 @@ export async function GET(request: NextRequest) {
 
 	const token = await authprovider.getTokenByAuthCode(code);
 
-	//const savedTokenId = await authprovider.lagreToken(token);
-
 	return NextResponse.redirect('http://localhost:3000/', {
 		status: 302,
 		headers: {
