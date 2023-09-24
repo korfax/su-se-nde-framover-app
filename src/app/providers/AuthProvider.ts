@@ -18,7 +18,7 @@ class Authprovider {
 	 */
 	async getLoginUrl(
 		req: msal.AuthorizationUrlRequest = {
-			scopes: ['User.Read'],
+			scopes: ['api://f6ff7095-9737-4e80-934f-7899a6bd4259/default.backend.api.scope'],
 			redirectUri: 'http://localhost:3000/api/auth/login/callback',
 		}
 	) {
@@ -48,7 +48,7 @@ class Authprovider {
 		code: string,
 		req: msal.AuthorizationCodeRequest = {
 			code: code,
-			scopes: ['User.Read'],
+			scopes: ['api://f6ff7095-9737-4e80-934f-7899a6bd4259/default.backend.api.scope'],
 			redirectUri: 'http://localhost:3000/api/auth/login/callback',
 		}
 	) {
