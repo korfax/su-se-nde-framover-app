@@ -1,5 +1,6 @@
 import Header from '@/components/header/Header';
 import UserProvider from './providers/UserProvider';
+import './globals.css';
 
 export const metadata = {
 	title: 'Susende Framover',

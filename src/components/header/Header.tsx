@@ -11,7 +11,7 @@ const Header = () => {
 	return (
 		<div>
 			<div>
-				<span>logo</span>
+				<span className="text-3xl font-bold underline">logo</span>
 				<span>logo text</span>
 			</div>
 			{user === null ? <SignIn /> : <SignOut />}
